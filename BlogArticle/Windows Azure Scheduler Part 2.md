@@ -14,7 +14,7 @@ Once the project has been set up, and I have verified that it builds, I add a ne
 ![Add controller - ScheduleController] (https://bekkopen.blob.core.windows.net/attachments/ab93e99b-c66b-47ae-b456-c869483e19e9)
 
 I make the class very simple:
-```C#
+```csharp
 public class ScheduleController : ApiController
 {
     [HttpPost]
@@ -27,7 +27,7 @@ public class ScheduleController : ApiController
 ```
 I have created a simple method that only creates some log information, and returns a 202 Accepted HTTP message. Because calling this API method in a real scenario would have a permanent side effect, I choose to make it available for POST requests only to adhere to the HTTP method semantics.
 In order for trace information to be available for the Azure Web Site, I need to add the following to the <code>&lt;configuration&gt;</code> element in the <code>Web.Config</code>:
-```XML
+```xml
 <system.diagnostics>
     <trace>
       <listeners>
@@ -88,7 +88,7 @@ So, we will authenticate the Scheduler in the application based on:
 In this example, we are based on ASP.NET 4.5, and the revamped security stack new in this version of the framework. In detail, we will rely on role based access control inside our Web API controller, and we will create a custom authentication module that authenticates the caller and issuing role claims for it for the rest of the application to use.
 
 First, let’s set up access control in our API. We do this by defining a role *scheduler* and adds an <code>AuthorizeAttribute</code> to the controller:
-```C#
+```csharp
 [Authorize(Roles = "scheduler")]
 public class ScheduleController : ApiController
 {
@@ -101,7 +101,7 @@ public class ScheduleController : ApiController
 }
 ```
 Now, that was simple. Next step is a bit more intricate. Let’s create an <code>IHttpModule</code> implementation that performs authentication in the ASP.NET [application pipeline](http://msdn.microsoft.com/en-us/library/bb470252.aspx). Let’s create a class <code>SchedulerAuthenticationModule</code>, and use this scaffold: 
-```C#
+```csharp
 public class SchedulerAuthenticationModule : IHttpModule
 {
     public void Init(HttpApplication context)
@@ -120,7 +120,7 @@ public class SchedulerAuthenticationModule : IHttpModule
 }
 ```
 Then the first we will add is some code to check for the presence of the custom HTTP headers that the Scheduler is known to include. If they are not there, the module will just quit and give control back to the pipeline:
-```C#
+```csharp
 void AuthenticateScheduler(object sender, EventArgs e)
 {
     var application = (HttpApplication) sender;
@@ -131,7 +131,7 @@ void AuthenticateScheduler(object sender, EventArgs e)
 }
 ```
 If the header is present, we call the <code>AuthenticateUsingSharedSecret</code> method, which extracts the body of the request. If the body content is prefixed with *secret:*, we will extract what is after this in the message, and compare that to our known secret:
-```C#
+```csharp
 private void AuthenticateUsingSharedSecret(HttpRequestBase request)
 {
     Trace.TraceInformation("Trying to read shared secret from request body");
@@ -146,7 +146,7 @@ private void AuthenticateUsingSharedSecret(HttpRequestBase request)
 }
 ```
 If we don’t find any secret in the body, or if the secret in the request body is not equal to our known secret, we will return. If the secret in the request matches our secret, we will call <code>CreateClaimsForScheduler()</code> to create claims for the scheduler. This method looks like this:
-```C#
+```csharp
 private static void CreateClaimsForScheduler()
 {
     var nameIdClaim = new Claim(ClaimTypes.NameIdentifier, "scheduler");
@@ -172,7 +172,7 @@ private static void CreateClaimsForScheduler()
 ```
 The most important claim that we add here, is the claim of role *scheduler*. The presence of this role will be used by the access control further down in the request processing to grant access to our method in the controller that we set up previously. Note also that the principal that we created is assigned both as the <code>Thread.CurrentPrincipal</code> and <code>HttpContext.Current.User</code>. This makes the application able to fetch the principal using all available methods from the .NET framework, and makes the authentication method loosely coupled with the rest of the application.
 One piece of the puzzle is still missing: where does the application store the shared secret, and how does retrieve it? We will add the secret to <code>appSettings</code> in <code>Web.Config</code> and use the <code>GetSharedSecretFromConfig</code> method to retrieve it:
-```C#
+```csharp
 private static string GetSharedSecretFromConfig()
 {
     const string appSettingsKey = "scheduler.secret";
@@ -185,13 +185,13 @@ private static string GetSharedSecretFromConfig()
 }
 ```
 Add the secret to <code>Web.Config</code>:
-```XML
+```xml
 <appSettings>
     <add key="scheduler.secret" value="44139710149444462369" />
 </appSettings>
 ```
 Finally, we have to register the <code>SchedulerAuthenticationModule</code> as an HTTP module in <code>Web.Config</code> by adding the following to the <code>system.webServer</code> element:
-```XML
+```xml
 <modules>
     <add name="SchedulerAuthenticationModule" type="azurescheduler_demo_web.SchedulerAuthenticationModule, azurescheduler-demo-web" preCondition="managedHandler" />
 </modules>

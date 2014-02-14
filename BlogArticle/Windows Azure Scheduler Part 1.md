@@ -75,7 +75,7 @@ When prompted to enter the roles needed in my Cloud Service, create a Worker Rol
 ![Adding roles a cloud project](https://bekkopen.blob.core.windows.net/attachments/9f2dae78-157c-471e-8f55-c19ef78021a5)
 
 The first thing I will set up, is the connection string for the application to use for connecting to the storage queue. The first step is to define a setting for this in the <code>ServiceDefinition.csdef</code> file:
-```XML 
+```xml 
 <?xml version="1.0" encoding="utf-8"?>
 <ServiceDefinition name="azurescheduler_demo" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition" schemaVersion="2013-10.2.2">
   <WorkerRole name="EmailWorkerRole" vmsize="ExtraSmall">
@@ -107,7 +107,7 @@ Then use this key as the <code>AccountKey</code> in the connection string, makin
 (I recommend you use HTTPS for <code>DefaultEndpointsProtocol</code>, not HTTP)
 
 Enter the value of this connection string into the <code>ServiceConfiguration.Cloud.cscfg</code> file, defining the <code>StorageConnectionString</code> setting:
-```XML
+```xml
 <?xml version="1.0" encoding="utf-8"?>
 <ServiceConfiguration serviceName="azurescheduler_demo" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="3" osVersion="*" schemaVersion="2013-10.2.2">
   <Role name="EmailWorkerRole">
@@ -122,7 +122,7 @@ Enter the value of this connection string into the <code>ServiceConfiguration.Cl
 Also, notice the <code>Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString</code> setting already present in the <code>ServiceConfiguration.Cloud.cscfg</code>. This is the storage account that the built-in diagnostics will log to, and this is useful for debugging purposes. Change the value of this to be the same connection string as for the <code>StorageConnectionString</code>. This will enable you to read the results of our test execution later on.
 
 The configuration now is in place. The next step is to write some code. The Cloud template in Visual Studio has provided a basic scaffold code for us. The first thing to do is to create a class <code>EmailProcessor</code> that we call from the <code>WorkerRole</code> class. Write two lines into the original code: one to create a new object instance, and one to call the <code>ProcessMessagesFromQueue</code> method:
-```C#
+```csharp
 public class WorkerRole : RoleEntryPoint
 {
     public override void Run()
@@ -141,7 +141,7 @@ public class WorkerRole : RoleEntryPoint
 }
 ```
 Here is the <code>EmailProcessor</code> class:
-```C#
+```csharp
 public class EmailProcessor
 {
     private readonly CloudQueue _queue;
@@ -167,7 +167,7 @@ public class EmailProcessor
 In the constructor, the connection string for the storage account is read, and the queue *email* is initialized. In the <code>ProcessMessagesFromQueue</code> method, we create the queue if it does not exist. Then we query the queue for the first 10 messages, and sets the queue to make the messages invisible on the queue for five minutes. If we are not done with processing the messages in five minutes, they will be available for others to process. In the for-loop, we handle each message by writing a log message before we delete it.
 
 In order for diagnostics to send our log entries to the storage, we have to add these lines to the <code>OnStart</code> method in the <code>WorkerRole</code> class:
-```C#
+```csharp
 var diagConfig = DiagnosticMonitor.GetDefaultInitialConfiguration();
             
 diagConfig.Logs.ScheduledTransferLogLevelFilter = LogLevel.Information;
