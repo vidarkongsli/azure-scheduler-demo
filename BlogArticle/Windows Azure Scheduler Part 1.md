@@ -197,6 +197,6 @@ I have explained the basic concepts of the Windows Azure Scheduler, and discusse
 
 As I mentioned before, using storage queue actions requires some extra configuration which adds some complexity. If you already have a web application set up in your system, and your tasks typically execute quickly, you should probably use an HTTP/S action type instead, which will investigate in a later post.
 
-You can find the sample code in this post on GitHub.
+You can find the sample code in this post on [GitHub](https://github.com/vidarkongsli/azure-scheduler-demo/).
 
 Suggestions and comments are very welcome. 
