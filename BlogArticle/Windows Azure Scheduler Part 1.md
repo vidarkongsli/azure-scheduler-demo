@@ -17,21 +17,21 @@ As I mentioned earlier, there are two main types of actions: HTTP/S and Storage 
 So, what action type should you use? Here is some guidance:
 
 |**Action type**|**HTTP**|
-| -------------------- | ----------- |
+| -------------------- | :----------- |
 |Basics|Visits an HTTP URL using a given method with a predefined, static payload|
 |Pros|This is by far the simplest action type with respect to configuration.|
 |Cons|Not good for triggering long-running jobs, as you might experience timeouts at the HTTP level or in the web application. Furthermore, the URL would have to be secured which could be difficult in a cloud scenario|
 |Use for|Triggering brief jobs that completes quickly|
 
 |**Action type**|**HTTPS**|
-| -------------------- | ----------- |
+| -------------------- | :----------- |
 |Basics	|Visits an HTTPS URL using a given method with a predefined, static payload|
 |Pros	|Using HTTPS adds confidentiality and integrity to the payload sent in the request|
 |Cons	|Could be a wee bit harder to configure your app to use HTTPS. However, if your application uses Azure WebSites, HTTPS is available out of the box.|
 |Use for|Triggering brief jobs that completes quickly|
 
 |**Action type**|**Storage queue**|
-| -------------------- | ----------- |
+| -------------------- | :----------- |
 |Basics	|Places a message into a Windows Azure Storage Queue, with a given, static payload|
 |Pros	|Offers setting up authentication of the Scheduler to the Queue. Queue is access-controlled out of the box. Allows for asynchronous processing of jobs.|
 |Cons	|Would need a component that reads messages from the queue, and executes them. For instance, a WorkerRole, requires a somewhat more complex setup and deployment than compared to Azure Web Sites.|
