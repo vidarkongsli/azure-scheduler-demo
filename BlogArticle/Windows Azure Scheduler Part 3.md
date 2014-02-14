@@ -100,7 +100,7 @@ $job
 ```
 We see that we get an object graph back which represents the parsed JSON string we got from the server:
 
-![x](Windows Azure Scheduler-3-2.png)
+![Job object graph returned from the server](https://bekkopen.blob.core.windows.net/attachments/0fb661b1-6437-4476-a06f-aed071679635)
 
 We can also walk the object graph:
 ```PowerShell
