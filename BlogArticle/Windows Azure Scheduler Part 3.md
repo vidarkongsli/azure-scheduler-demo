@@ -37,11 +37,64 @@ $res
 ```
 If we run the following output, we yield:
 ```xml
-<Resource xmlns="http://schemas.microsoft.com/windowsazure" xmlns:i="http://www.w3.org/2001/XMLSchema-instance"><CloudServiceSettings><GeoRegion>North Europe</GeoRegion></CloudServiceSettings><ETag>9134ee7f-ba2b-4298-b3c1-540c4ee2d0cc</ETag><IntrinsicSettings><Plan>Standard</Plan><Quota><MaxJobCount>50</MaxJobCount><MaxRecurrence><Frequency>Minute</Frequency><Interval>1</Interval></MaxRecurrence></Quota></IntrinsicSettings><Name>demo_jobs</Name><OperationStatus><Error><HttpCode>200</HttpCode><Message>OK</Message></Error><Result>Succeeded</Result></OperationStatus><PromotionCode></PromotionCode><SchemaVersion>1.1</SchemaVersion><State>Started</State><SubState i:nil="true"/><Type>jobcollections</Type></Resource>
+<Resource xmlns="http://schemas.microsoft.com/windowsazure" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+  <CloudServiceSettings>
+    <GeoRegion>North Europe</GeoRegion>
+  </CloudServiceSettings>
+  <ETag>9134ee7f-ba2b-4298-b3c1-540c4ee2d0cc</ETag>
+  <IntrinsicSettings>
+    <Plan>Standard</Plan>
+    <Quota>
+      <MaxJobCount>50</MaxJobCount>
+      <MaxRecurrence>
+        <Frequency>Minute</Frequency>
+        <Interval>1</Interval>
+      </MaxRecurrence>
+    </Quota>
+  </IntrinsicSettings>
+  <Name>demo_jobs</Name>
+  <OperationStatus>
+    <Error>
+      <HttpCode>200</HttpCode>
+      <Message>OK</Message>
+    </Error>
+    <Result>Succeeded</Result>
+  </OperationStatus>
+  <PromotionCode></PromotionCode>
+  <SchemaVersion>1.1</SchemaVersion>
+  <State>Started</State>
+  <SubState i:nil="true"/>
+  <Type>jobcollections</Type>
+</Resource>
 ```
 In the same manner, we can also list all the jobs in the job collection by adding ‘/jobs’ to the end of the request URI, and we get:
 ```json 
-[{"id":"send_newsletter","startTime":"2014-02-11T01:00:00Z","action":{"queueMessage":{"storageAccount":"sojourn","queueName":"email","sasToken":"?sv=2012-02-12&si=SchedulerAccessPolicy11.02.2014%2014%3A28%3A22&sig=mSIuQQxWK9t%2BQCn7VGRjKeholH7FNGVLRdp9zriFNtQ%3D","message":"action:send_newsletter"},"type":"storageQueue"},"recurrence":{"frequency":"day","endTime":"2015-02-12T00:00:00Z","interval":1},"state":"enabled","status":{"lastExecutionTime":"2014-02-13T01:00:00.9736795Z","nextExecutionTime":"2014-02-14T01:00:00Z","executionCount":2,"failureCount":0,"faultedCount":0}}]
+[{
+    "id": "send_newsletter",
+    "startTime": "2014-02-11T01:00:00Z",
+    "action": {
+        "queueMessage": {
+            "storageAccount": "sojourn",
+            "queueName": "email",
+            "sasToken": "?sv=2012-02-12&si=SchedulerAccessPolicy11.02.2014 14:28:22&sig=mSIuQQxWK9t+QCn7VGRjKeholH7FNGVLRdp9zriFNtQ=",
+            "message": "action:send_newsletter"
+        },
+        "type": "storageQueue"
+    },
+    "recurrence": {
+        "frequency": "day",
+        "endTime": "2015-02-12T00:00:00Z",
+        "interval": 1
+    },
+    "state": "enabled",
+    "status": {
+        "lastExecutionTime": "2014-02-13T01:00:00.9736795Z",
+        "nextExecutionTime": "2014-02-14T01:00:00Z",
+        "executionCount": 2,
+        "failureCount": 0,
+        "faultedCount": 0
+    }
+}]
 ```
 Notice that we now get back JSON instead of XML. Go figure. Anyway, add some code to detect the result format, and parse it accordingly:
 ```powershell
