@@ -3,15 +3,15 @@ Before we set up our Scheduler job, let’s make a sample application that we wi
 
 I then select the ASP.NET MVC 4 Web Application template and name the project *azurescheduler-demo-web*:
 
-![d] (Windows Azure Scheduler-2-1.PNG)
+![Add new project - ASP.NET MVC 4 Web Application](https://bekkopen.blob.core.windows.net/attachments/0d5682e4-a006-4aec-96e7-9145b263197b)
 
 On the next dialog box, I select to make a Web API project:
 
-![d] (Windows Azure Scheduler-2-2.PNG)
+![New ASP.NET MVC 4 Project dialog - select Web API template](https://bekkopen.blob.core.windows.net/attachments/62079bd5-efc6-4bfc-82f3-d423323d95eb)
 
 Once the project has been set up, and I have verified that it builds, I add a new Web API Controller by selecting *Add-->New item...* on the web project and I name it ScheduleController:
 
-![d] (Windows Azure Scheduler-2-3.PNG)
+![Add controller - ScheduleController] (https://bekkopen.blob.core.windows.net/attachments/ab93e99b-c66b-47ae-b456-c869483e19e9)
 
 I make the class very simple:
 ```C#
@@ -43,33 +43,33 @@ In order for trace information to be available for the Azure Web Site, I need to
 ```
 The application is then ready for publishing to an Azure Web Site, so I select *Publish...* on the context menu for the web project. I have no web site set up and no corresponding publishing profile, so then click on the *Import*-button, and then select to *Import from a Windows Azure Web Site*, and select *New...*:
 
-![x](Windows Azure Scheduler-2-6.png)
+![Import publish settings dialog](https://bekkopen.blob.core.windows.net/attachments/5b03a682-07cf-4134-b697-a50883bf999a)
 
 Then, name the site and press *Create*:
 
-![x](Windows Azure Scheduler-2-7.png)
+![Create site on Windows Azure dialog](https://bekkopen.blob.core.windows.net/attachments/aefed354-a2db-497c-8015-af83724ca537)
 
 The web site will be created, and the profile is ready:
 
-![x](Windows Azure Scheduler-2-8.png)
+![Publish web dialog](https://bekkopen.blob.core.windows.net/attachments/5792a19d-b96f-4043-b598-4b3584178952)
 
 Then, press *Publish*, and the application will be published. Our application is now ready to be triggered by the Scheduler.
 ## Configuring the HTTPS job
 In my last post, I argued that HTTP and HTTPS action types in Scheduler jobs are quite similar. I will thus only show an HTTPS example, as I would strongly suggest that you use this variant. Now that our application is ready, and has a URL to visit (https://azurescheduler-demo-web.azurewebsites.net/api/schedule/updatenews), we can set up a Scheduler job. Name this job, make it an HTTPS action type, use POST as method, and point it to the URL of the application, similar to the one given above. Here's an example:
 
-![x](Windows Azure Scheduler-2-12.png)
+![Create job action - update_news](https://bekkopen.blob.core.windows.net/attachments/63992081-398a-4a28-a365-74d02f1018ee)
 
 Before moving on, it would be OK to check that our setup works so far. We have already instrumented our application using .NET Diagnostics, so let's have a look at the logs. First, enable application logging in the Azure Web Site. This is done using the Server Explorer in Visual Studio, by bringing up the context menu on the Web Site and selecting *Properties*. Then, set the application logging entry to *Information*:
 
-![x](Windows Azure Scheduler-2-9-alt.png)
+![Setting 'Application logging' to 'Information'](https://bekkopen.blob.core.windows.net/attachments/84fe7867-682a-4b61-be04-0a71111a3042)
 
 Save the changes, go back to the context menu for the Web Site and select *View Streaming Logs in Output Window*:
 
-![x](Windows Azure Scheduler-2-10.png)
+![Switching on 'View Streaming Logs in Output Window'](https://bekkopen.blob.core.windows.net/attachments/7a0fc8ab-7f57-48a5-83e5-b2d8db3557f1)
 
 Then, observe the application log stream in the Visual Studio output window:
 
-![x](Windows Azure Scheduler-2-11.png)
+![View streaming application log in Visual Studio](https://bekkopen.blob.core.windows.net/attachments/4171b09e-1deb-4963-b8f1-824b537a5313)
 
 (You might want to switch off the live log streaming once you are done - go back to the Web Site context menu to do that)
 
@@ -202,7 +202,7 @@ The next time the Scheduler executes the job, we will see that it will get a not
 
 Unfortunately, as the time of writing there is no possibility to change an existing job using the Management Console, so we need to delete our old job and create a new one. (More on that on a later post). So, in the new job, include the secret:
 
-![x](Windows Azure Scheduler-2-14.png)
+![Creating job action with shared secret in body](https://bekkopen.blob.core.windows.net/attachments/54961fa0-bb97-473e-a9bb-68693a41dfd5)
 
 ## Summary
 This concludes the second post in the series in Azure Scheduler. We have seen how we can use the HTTP/S action type to call into an ASP.NET Web API controller, and how to secure the access to the URL. Since we are sending a shared secret over the wire, it is recommended that you use HTTPS exclusively, which will protect the secret.
