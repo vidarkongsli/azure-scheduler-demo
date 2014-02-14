@@ -105,7 +105,7 @@ Then use this key as the <code>AccountKey</code> in the connection string, makin
 
 (I recommend you use HTTPS for <code>DefaultEndpointsProtocol</code>, not HTTP)
 
-Enter the value of this connection string into the <code>ServiceConfiguration.Cloud.cscfg</code>code> file, defining the <code>StorageConnectionString</code> setting:
+Enter the value of this connection string into the <code>ServiceConfiguration.Cloud.cscfg</code> file, defining the <code>StorageConnectionString</code> setting:
 ```XML
 <?xml version="1.0" encoding="utf-8"?>
 <ServiceConfiguration serviceName="azurescheduler_demo" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="3" osVersion="*" schemaVersion="2013-10.2.2">
