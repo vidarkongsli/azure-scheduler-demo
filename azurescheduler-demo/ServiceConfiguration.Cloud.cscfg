@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ServiceConfiguration serviceName="azurescheduler_demo" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="3" osVersion="*" schemaVersion="2013-10.2.2">
+  <Role name="EmailWorkerRole">
+    <Instances count="1" />
+    <ConfigurationSettings>
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="DefaultEndpointsProtocol=https;AccountName=sojourn;AccountKey=VQ9gsCBGpfFQCdgdA3L5Hm6Ofr/3Ivz5z1fU2b2v0tpprbbsmhEvZPi0WSSLN/qSPwo7R51HNJ2q9cBSWOS1mQ==" />
+      <Setting name="StorageConnectionString" value="DefaultEndpointsProtocol=https;AccountName=sojourn;AccountKey=VQ9gsCBGpfFQCdgdA3L5Hm6Ofr/3Ivz5z1fU2b2v0tpprbbsmhEvZPi0WSSLN/qSPwo7R51HNJ2q9cBSWOS1mQ=="/>
+    </ConfigurationSettings>
+  </Role>
+</ServiceConfiguration>
