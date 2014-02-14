@@ -207,6 +207,6 @@ Unfortunately, as the time of writing there is no possibility to change an exist
 ## Summary
 This concludes the second post in the series in Azure Scheduler. We have seen how we can use the HTTP/S action type to call into an ASP.NET Web API controller, and how to secure the access to the URL. Since we are sending a shared secret over the wire, it is recommended that you use HTTPS exclusively, which will protect the secret.
 
-You can find the sample code in this post on GitHub.
+You can find the sample code in this post on [GitHub](https://github.com/vidarkongsli/azure-scheduler-demo/).
 
 Suggestions and comments are very welcome.
