@@ -42,7 +42,9 @@ If we run the following output, we yield:
 In the same manner, we can also list all the jobs in the job collection by adding ‘/jobs’ to the end of the request URI, and we get:
 ```JSON 
 [{"id":"send_newsletter","startTime":"2014-02-11T01:00:00Z","action":{"queueMessage":{"storageAccount":"sojourn","queueName":"email","sasToken":"?sv=2012-02-12&si=SchedulerAccessPolicy11.02.2014%2014%3A28%3A22&sig=mSIuQQxWK9t%2BQCn7VGRjKeholH7FNGVLRdp9zriFNtQ%3D","message":"action:send_newsletter"},"type":"storageQueue"},"recurrence":{"frequency":"day","endTime":"2015-02-12T00:00:00Z","interval":1},"state":"enabled","status":{"lastExecutionTime":"2014-02-13T01:00:00.9736795Z","nextExecutionTime":"2014-02-14T01:00:00Z","executionCount":2,"failureCount":0,"faultedCount":0}}]
+```
 Notice that we now get back JSON instead of XML. Go figure. Anyway, add some code to detect the result format, and parse it accordingly:
+```PowerShell
 $res = $task.Result.Content.ReadAsStringAsync().Result
 $mediaType = $task.Result.Content.Headers.ContentType.MediaType
 if ($mediaType -eq 'application/xml') {
