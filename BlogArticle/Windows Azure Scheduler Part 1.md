@@ -46,17 +46,17 @@ When you have access to the preview, you should have an entry in the menu on the
 
 Click on the *Scheduler* item, and select *New-->App Services-->Scheduler-->Custom Create*, which will bring up the following dialog:
 
-![Selecting job collection for new job] (https://bekkopen.blob.core.windows.net/attachments/13288af6-5e08-42df-9d33-02d7e0f3e1f9)
+![Selecting job collection for new job](https://bekkopen.blob.core.windows.net/attachments/13288af6-5e08-42df-9d33-02d7e0f3e1f9)
 
 Here I have selected to create a new job collection in the North Europe datacenter. Clicking the right arrow icon in the lower right corner brings me to the next dialog:
 
-![Defining job action] (https://bekkopen.blob.core.windows.net/attachments/02c7e539-130c-48df-9440-bcd1b0202d95)
+![Defining job action](https://bekkopen.blob.core.windows.net/attachments/02c7e539-130c-48df-9440-bcd1b0202d95)
 
 I have selected an action type of storage queue, and selected a queue in an existing storage account. You could also choose to create a new storage account and queue at this point. I have also clicked on the *Generate SAS token* which creates a token that the Scheduler needs to be able to access the queue. I have also selected to include a payload in the body of the message, which signals to the receiving application what it is supposed to do. In terms of the architecture of my solution I could also have chosen to have a separate queue for each action my solution is to take. Then I would not need to have anything in the message body. An empty message would suffice to trigger the given functionality.
 
 Finally, I need to define the schedule for the job:
 
-![Defining recurrence] (https://bekkopen.blob.core.windows.net/attachments/a2793ddf-a84d-4461-b6c7-df63c4b116b6)
+![Defining recurrence](https://bekkopen.blob.core.windows.net/attachments/a2793ddf-a84d-4461-b6c7-df63c4b116b6)
 
 I have chosen to make this job a recurring job, scheduled to run every night at 1 am for the next year.
 
@@ -67,11 +67,11 @@ We now have set up the Scheduler to create queue entries, but we have no applica
 As I mentioned earlier, the storage queue job type requires some component in your system to process the messages. Here, I will create a basic Azure WorkerRole application that does this. I am using Visual Studio 2013 for this, targeting .NET 4.5.
 In Visual Studio, I will select *File-->New Project*, and use the Windows Azure Cloud Service project template:
 
-![Creating a cloud project in Visual Studio] (https://bekkopen.blob.core.windows.net/attachments/9b95f38f-691d-4e3a-b516-eeb0ad91c8c4)
+![Creating a cloud project in Visual Studio](https://bekkopen.blob.core.windows.net/attachments/9b95f38f-691d-4e3a-b516-eeb0ad91c8c4)
 
 I then get prompted to enter the roles needed in my Cloud Service, and I create a Worker Role which I name “EmailWorkerRole”:
 
-![Adding roles a cloud project] (https://bekkopen.blob.core.windows.net/attachments/9f2dae78-157c-471e-8f55-c19ef78021a5)
+![Adding roles a cloud project](https://bekkopen.blob.core.windows.net/attachments/9f2dae78-157c-471e-8f55-c19ef78021a5)
 
 The first thing I will set up, is the connection string for the application to use for connecting to the storage queue. The first step is to define a setting for this in the <code>ServiceDefinition.csdef</code> file:
 ```XML 
@@ -93,11 +93,11 @@ The next step is to define the connection string itself. For production use, thi
 
 The AccountName is simply the name of your account. In the example from above, this is *sojourn*. The account key can be found in the Azure Management Console by navigating to the given storage account and selecting *Manage access key* at the bottom of the page:
 
-![Finding access keys for a storage service] (https://bekkopen.blob.core.windows.net/attachments/0b9c6024-833f-444c-9f41-6eb9d5ed0fa9)
+![Finding access keys for a storage service](https://bekkopen.blob.core.windows.net/attachments/0b9c6024-833f-444c-9f41-6eb9d5ed0fa9)
 
 In the dialog box that pops up click the "copy to clipboard" icon of either the primary or the secondary key. It does not matter which one you choose:
 
-![Copying a storage access key to the clipboard] (https://bekkopen.blob.core.windows.net/attachments/6c2f4d5d-7985-4a16-897a-bb9aa3a9fffc)
+![Copying a storage access key to the clipboard](https://bekkopen.blob.core.windows.net/attachments/6c2f4d5d-7985-4a16-897a-bb9aa3a9fffc)
 
 Then use this key as the <code>AccountKey</code> in the connection string, making the connection string something like this:
 
@@ -178,19 +178,19 @@ We can now build our project, and we are ready for deployment.
 
 On the context menu of the solution in solution explorer, click on the *Publish* item:
 
-![Publishing a cloud application from Visual Studio] (https://bekkopen.blob.core.windows.net/attachments/660884b1-03ad-48d9-9ade-db58a9cb6ced)
+![Publishing a cloud application from Visual Studio](https://bekkopen.blob.core.windows.net/attachments/660884b1-03ad-48d9-9ade-db58a9cb6ced)
 
 Since we have no could service to deploy to, we choose to create a new one:
 
-![Creating a cloud service to deploy to from Visual Studio] (https://bekkopen.blob.core.windows.net/attachments/0ff912d6-2c8e-43d1-8378-7a8a951bf11e)
+![Creating a cloud service to deploy to from Visual Studio](https://bekkopen.blob.core.windows.net/attachments/0ff912d6-2c8e-43d1-8378-7a8a951bf11e)
 
 We use the default settings for the rest, and press *Publish*:
 
-![Publish settings summary] (https://bekkopen.blob.core.windows.net/attachments/33106d88-1583-488f-b9d1-1b3a12ed3b05)
+![Publish settings summary](https://bekkopen.blob.core.windows.net/attachments/33106d88-1583-488f-b9d1-1b3a12ed3b05)
 
 Publishing normally takes a few minutes, more often than not less than ten minutes. Once the application is up and running we can use a storage explorer to investigate our logs (I use [Azure Storage Explorer](http://azurestorageexplorer.codeplex.com/)). Here, we can see that our application has processed the message:
 
-![Viewing diagnostics log entries in Azure Storage] (https://bekkopen.blob.core.windows.net/attachments/395e1607-0699-4432-bd59-2c69d4b9c68b)
+![Viewing diagnostics log entries in Azure Storage](https://bekkopen.blob.core.windows.net/attachments/395e1607-0699-4432-bd59-2c69d4b9c68b)
 
 ## In closing
 I have explained the basic concepts of the Windows Azure Scheduler, and discussed what you can use it for, and what types of actions you can set up. Then, I went on to show an example on how to create a storage queue action and made a simple application to respond to these actions. Storage queue actions are especially good for processing tasks that might take a long time to complete asynchronically. Note that in our example, when popping messages off the queue, we made them invisible for five minutes. This means that we have five minutes to complete the processing. If your task might take longer, you should extend this timespan.
