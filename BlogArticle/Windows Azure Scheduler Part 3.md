@@ -164,7 +164,7 @@ $updatedJob = update-azuremanagementrequest 'cloudservices/CS-NorthEurope-schedu
 ```
 We have now completed the cycle of getting job collection information, listing jobs, getting and updating a job.
 ## Wrapping up
-We have now gone through creating PowerShell scripts for accessing the Azure Mangement API, specifically using them for viewing and updating Scheduler information. This have given us some insight into how the API works, and the functions that we have created are generic in the respect that they can be used on other resources in the Management API. I have cleaned up the code, and also made some specific functions for the various Scheduler resources that we can access. You can find this code as a PowerShell module here (!!!!).
+We have now gone through creating PowerShell scripts for accessing the Azure Mangement API, specifically using them for viewing and updating Scheduler information. This have given us some insight into how the API works, and the functions that we have created are generic in the respect that they can be used on other resources in the Management API. I have cleaned up the code, and also made some specific functions for the various Scheduler resources that we can access. You can find this code as a PowerShell module [here](https://raw2.github.com/vidarkongsli/azure-scheduler-demo/master/PowerShell/azure-scheduler.psm1).
 
 Here are some examples of using the cleaned-up functions:
 ```PowerShell
@@ -185,3 +185,11 @@ $history | select -first 1
 # Get executions that failed                                                                               
 $history | Where-Object { $_.status -eq 'failed' }
 ```
+In this article series, we have now gone through the basics of using the Windows Azure Scheduler. Once again, note that it is currently in preview and features are subject to change. We have overcome a few quirks that might be fixed in the final release. Anyway, you are now able to start using the service today in your solution, and you have the basic tools to manage it. 
+
+You can find the sample code in this post on [GitHub](https://github.com/vidarkongsli/azure-scheduler-demo/).
+
+Suggestions and comments are very welcome.
+
+
+
