@@ -1,7 +1,7 @@
 # Windows Azure Scheduler Examples #
 
 Sample application for the blog post series:
-(TBD)
+* [Windows Azure Scheduler (part 1): Introduction](http://open.bekk.no/windows-azure-scheduler-part-1-introduction)
 
 ## License
 Copyright 2014 Vidar Kongsli
