@@ -1,5 +1,5 @@
 ## Creating the application using ASP.NET Web API
-Before we set up our Scheduler job, let’s make a sample application that we will trigger from our action. We will base this on ASP.NET 4.5 using Web API. We add a new web project to the Visual Studio solution that we used in my previous post. This we do by selecting *Add-->New project...* on the solution context menu in solution explorer.
+Before we set up our Scheduler job, let’s make a sample application that we will trigger from our action. We will base this on ASP.NET 4.5 using Web API. We add a new web project to the Visual Studio solution that we used in my [previous post](http://open.bekk.no/windows-azure-scheduler-part-1-introduction). This we do by selecting *Add-->New project...* on the solution context menu in solution explorer.
 
 Then select the ASP.NET MVC 4 Web Application template and name the project *azurescheduler-demo-web*:
 
@@ -54,7 +54,7 @@ The web site will be created, and the profile is ready:
 
 Then, press *Publish*, and the application will be published. Our application is now ready to be triggered by the Scheduler.
 ## Configuring the HTTPS job
-In my last post, I argued that HTTP and HTTPS action types in Scheduler jobs are quite similar. I will thus only show an HTTPS example, as I would suggest that you use this variant. Now that our application is ready, with a URL to visit (https://azurescheduler-demo-web.azurewebsites.net/api/schedule/updatenews), we can set up a Scheduler job. Name this job, make it an HTTPS action type, use POST as method, and point it to the URL of the application. Here's an example:
+In my [last post](http://open.bekk.no/windows-azure-scheduler-part-1-introduction), I argued that HTTP and HTTPS action types in Scheduler jobs are quite similar. I will thus only show an HTTPS example, as I would suggest that you use this variant. Now that our application is ready, with a URL to visit (https://azurescheduler-demo-web.azurewebsites.net/api/schedule/updatenews), we can set up a Scheduler job. Name this job, make it an HTTPS action type, use POST as method, and point it to the URL of the application. Here's an example:
 
 ![Create job action - update_news](https://bekkopen.blob.core.windows.net/attachments/63992081-398a-4a28-a365-74d02f1018ee)
 
