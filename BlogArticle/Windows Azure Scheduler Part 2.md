@@ -11,7 +11,7 @@ On the next dialog box, we select to make a Web API project:
 
 When the project has been set up, we verify that it builds. Then we add a new Web API Controller by selecting *Add-->New item...* on the web project and name it ScheduleController:
 
-![Add controller - ScheduleController] (https://bekkopen.blob.core.windows.net/attachments/ab93e99b-c66b-47ae-b456-c869483e19e9)
+![Add controller - ScheduleController](https://bekkopen.blob.core.windows.net/attachments/ab93e99b-c66b-47ae-b456-c869483e19e9)
 
 The controller is very simple:
 ```csharp
