@@ -1,5 +1,5 @@
 ## Calling the REST API
-The most basic thing we need to set up to access the REST API is authentication. The API is requiring you to authenticate using an X-509 v certificate. Luckily, you already have one associated with your Azure Subscription ID, so what you need to do, is to fetch that and use with your request to the API. I assume that you have your Windows Azure PowerShell CmdLets already [set up](http://www.windowsazure.com/en-us/documentation/articles/install-configure-powershell/). Based on the great walk-thru of calling the Azure Management API from PowerShell that I found [here](http://michaelwasham.com/2013/10/08/calling-the-windows-azure-management-api-from-powershell/), I created the following function that returns an HttpClient prepared for calling the Management APIs:
+Authentication is the most basic thing we need to set up to access the REST API. The API is requiring you to authenticate using an X-509 v3 certificate. Luckily, you already have one associated with your Azure Subscription ID. What you need to do, is to fetch that and use it with your request to the API. I assume that you have your Windows Azure PowerShell CmdLets already [set up](http://www.windowsazure.com/en-us/documentation/articles/install-configure-powershell/). Based on the great walk-thru of calling the Azure Management API from PowerShell that I found [here](http://michaelwasham.com/2013/10/08/calling-the-windows-azure-management-api-from-powershell/), I created the following function that returns an HttpClient that is prepared for calling the Management APIs:
 ```powershell
 function get-azuremanagementhttpclient($xMsVersionHeader='2013-08-01') {
   $cert = Get-AzureSubscription -Current | select -ExpandProperty Certificate                
@@ -67,7 +67,7 @@ If we run the following output, we yield:
   <Type>jobcollections</Type>
 </Resource>
 ```
-In the same manner, we can also list all the jobs in the job collection by adding ‘/jobs’ to the end of the request URI, and we get:
+In the same manner, we can also list all the jobs in the job collection by adding ‘/jobs’ to the end of the request URI. Then we get:
 ```json 
 [{
     "id": "send_newsletter",
@@ -96,7 +96,7 @@ In the same manner, we can also list all the jobs in the job collection by addin
     }
 }]
 ```
-Notice that we now get back JSON instead of XML. Go figure. Anyway, add some code to detect the result format, and parse it accordingly:
+Notice that we now get back JSON instead of XML. Go figure. Anyway, we add code to detect the result format, and parse it accordingly:
 ```powershell
 $res = $task.Result.Content.ReadAsStringAsync().Result
 $mediaType = $task.Result.Content.Headers.ContentType.MediaType
@@ -207,7 +207,7 @@ function update-azuremanagementrequest {
   }
 }
 ```
-The most useful scenario for this, is to update the <code>$job</code> object that we got by calling <code>get-azureschedulerequest</code>, and send it back to using our new <code>update-azureschedulerrequest</code> function. But before we do that, we need to remove some items from the object that are [not allowed in an update request](http://msdn.microsoft.com/en-us/library/windowsazure/dn528934.aspx):
+The most useful scenario for this is to update the <code>$job</code> object that we got by calling <code>get-azureschedulerequest</code>, and send it back to using our new <code>update-azureschedulerrequest</code> function. But before we do that, we need to remove some items from the object that are [not allowed in an update request](http://msdn.microsoft.com/en-us/library/windowsazure/dn528934.aspx):
 ```powershell
 $job.recurrence.interval=2               
 $job.PSObject.Properties.Remove('state') #Remove .state 
@@ -217,7 +217,7 @@ $updatedJob = update-azuremanagementrequest 'cloudservices/CS-NorthEurope-schedu
 ```
 We have now completed the cycle of getting job collection information, listing jobs, getting and updating a job.
 ## Wrapping up
-We have now gone through creating PowerShell scripts for accessing the Azure Mangement API, specifically using them for viewing and updating Scheduler information. This have given us some insight into how the API works, and the functions that we have created are generic in the respect that they can be used on other resources in the Management API. I have cleaned up the code, and also made some specific functions for the various Scheduler resources that we can access. You can find this code as a PowerShell module [here](https://raw2.github.com/vidarkongsli/azure-scheduler-demo/master/PowerShell/azure-scheduler.psm1).
+We have now gone through creating PowerShell scripts for accessing the Azure Mangement API. Specifically, we use them for viewing and updating Scheduler information. This have given us some insight into how the API works. The functions that we have created are generic in the respect that we can use them on other resources in the Management API. I have cleaned up the code, and also made some specific functions for the various Scheduler resources that we can access. You can find this code as a PowerShell module [here](https://raw2.github.com/vidarkongsli/azure-scheduler-demo/master/PowerShell/azure-scheduler.psm1).
 
 Here are some examples of using the cleaned-up functions:
 ```powershell
@@ -243,3 +243,7 @@ In this article series, we have now gone through the basics of using the Windows
 You can find the sample code in this post on [GitHub](https://github.com/vidarkongsli/azure-scheduler-demo/).
 
 Suggestions and comments are very welcome.
+
+Here are the other blog posts in this series:
+* [Windows Azure Scheduler (part 1): Introduction](http://open.bekk.no/windows-azure-scheduler-part-1-introduction)
+* [Windows Azure Scheduler (part 2): HTTP/S action types](http://open.bekk.no/windows-azure-scheduler-part-2-http-s-action-types)
